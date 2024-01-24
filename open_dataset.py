@@ -22,7 +22,7 @@ def ini_dataset(data_folder_path: str, xlsx_file_path : str) -> (TensorDataset, 
 
         if os.path.exists(file_path):   # Check if the file exists, add its data into the mapping
             file_data = np.loadtxt(file_path, delimiter=',')
-            print(f"File length: {len(file_data)}")
+            #print(f"File length: {len(file_data)}")
             label = row[3:6]  # Extracting label data
             label = np.array(label, dtype=np.float32)  
             data_list.append(file_data)
@@ -57,28 +57,20 @@ if __name__ == '__main__' :
     
     combined_dataset = ini_dataset(folder_path, file_path)
     # Printing the first element of the dictionary
-    
+
     print(f"Data Dataset: {combined_dataset}")
+    print(f"Data type: {type(combined_dataset)}")
     print(f"Dataset shape: {combined_dataset[0][0].shape}")
     train_data, test_data = split_data(combined_dataset)
-    print(f"Train Data: {train_data}")
-    print(f"Test Data: {test_data}")
+    print(f"Train Data lenght : {len(train_data)}")
+    print(f"Train data: {train_data}")
+    print(f"Train data[0]: {train_data[0]}")
+    print(f"Train data[0] ecg: {train_data[0][0]}")
+    print(f"Train data[0] emotions: {train_data[0][1]}")
+    train_loader = torch.utils.data.DataLoader(train_data, batch_size=8, shuffle=True)
+    print(f"Train loader: {train_loader}")
+    # print(f"Test Data: {test_data}")
     
-
-
-""" 
-Pb la taille est pas la même alors que ça devrait être 154 pour les deux
-    print(f"Number of files: {len(data_dict)}")
-    print(f"Number of labels: {len(labels)}")
-     """
-
-
-# TO DO : 
-    # 1. Make the emotion file
-        # 1.1. Add a function to load the .xlsx file
-        # 1.2 Transform level of each emotion to a 0-1 scale
-        # 1.3. Make a np.array with all the emotions and the level
-    # 2. Make a big np.array with all the data and emotion
 
 
 

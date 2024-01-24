@@ -24,6 +24,7 @@ def to_categorical(y : np.ndarray) -> np.ndarray:
 
 
 class WeightClipper(object):
+    """ Clips the weights of the network to be in the range [-1, 1] """
     def __init__(self, frequency=5) -> None:
         self.frequency = frequency
 
@@ -34,6 +35,7 @@ class WeightClipper(object):
             w = w.clamp(-1,1)
 
 class WeightInit(object):
+    """ Initialize the weights of the network using a normal distribution """
     def __init__(self, frequency=5) -> None:
         self.frequency = frequency
 

@@ -13,17 +13,22 @@ def train_model(model : nn.Module, train_loader : DataLoader, test_loader : Data
     for epoch in range(args.epochs):
         model.train()
         running_loss = 0.0
+        print(f"Data length: {len(train_loader)}")
+        print(f"train loader: {train_loader}")
         for i, data in enumerate(train_loader):
+            print(f"Data: {data}")
             inputs, labels = data[0].to(device), data[1].to(device)
-            
             optimizer.zero_grad()
+            print(f"Input : {inputs}")
+            print(f"Size input : {inputs.size()}")
+            inputs = inputs.unsqueeze(0)
+            print(f"Size input after : {inputs.size()}")
             outputs = model(inputs)
             loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()
             
             running_loss += loss.item()
-
         adjust_learning_rate(args, optimizer, epoch)
 
         model.eval()
@@ -53,7 +58,7 @@ def train_model(model : nn.Module, train_loader : DataLoader, test_loader : Data
 
 
 if __name__ == "__main__":
-    from ecg_net import ConvTransformer
+    from ecg_net import EmotionCNN
     from open_dataset import ini_dataset, split_data
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -73,7 +78,7 @@ if __name__ == "__main__":
     test_loader = DataLoader(test_data, batch_size=args.batch_size, shuffle=False)
 
     # Initialize model
-    model = ConvTransformer()
+    model = EmotionCNN(input_channels=1)
     model.to(device)
 
     # Define loss function and optimizer
